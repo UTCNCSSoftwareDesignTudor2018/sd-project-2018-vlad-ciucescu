@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.ogm.datastore.provider">mongodb</property>
+        <property name="hibernate.ogm.datastore.database">sd_proj</property>
+        <property name="hibernate.ogm.datastore.host">127.0.0.1</property>
+        <property name="hibernate.ogm.datastore.port">27017</property>
+    </session-factory>
+</hibernate-configuration>
