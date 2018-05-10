@@ -5,12 +5,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name="file_descriptions")
-public class FileDescription {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private final Integer id;
+public class FileDescription extends DataEntity {
 
     @ManyToOne
     @JoinColumn(name = "repo_id")
@@ -26,19 +21,15 @@ public class FileDescription {
     private Instant addTime;
 
     public FileDescription() {
-        this.id = 0;
+        super();
     }
 
     public FileDescription(Integer id, Folder folder, String name, Long size, Instant addTime) {
-        this.id = id;
+        super(id);
         this.folder = folder;
         this.name = name;
         this.size = size;
         this.addTime = addTime;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Folder getFolder() {
@@ -76,8 +67,7 @@ public class FileDescription {
     @Override
     public String toString() {
         return "FileDescription{" +
-                "id=" + id +
-                ", folder=" + folder +
+                "folder=" + folder +
                 ", name='" + name + '\'' +
                 ", size=" + size +
                 ", addDate=" + addTime +
@@ -86,16 +76,11 @@ public class FileDescription {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FileDescription that = (FileDescription) o;
-
-        return id != null ? id.equals(that.id) : that.id == null;
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
     }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public int hashCode(){
+        return super.hashCode();
     }
 }

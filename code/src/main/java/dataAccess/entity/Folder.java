@@ -5,12 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "repositories")
-public class Folder {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private final Integer id;
+public class Folder extends DataEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -26,18 +21,14 @@ public class Folder {
     private Set<FileDescription> files;
 
     public Folder() {
-        this.id = 0;
+        super();
     }
 
     public Folder(Integer id, User user, String repositoryName, Long maxSize) {
-        this.id = id;
+        super(id);
         this.user = user;
         this.repositoryName = repositoryName;
         this.maxSize = maxSize;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public User getUser() {
@@ -67,8 +58,7 @@ public class Folder {
     @Override
     public String toString() {
         return "Folder{" +
-                "id=" + id +
-                ", user=" + user +
+                "user=" + user +
                 ", repositoryName='" + repositoryName + '\'' +
                 ", maxSize=" + maxSize +
                 '}';
@@ -76,16 +66,11 @@ public class Folder {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Folder folder = (Folder) o;
-
-        return id != null ? id.equals(folder.id) : folder.id == null;
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return super.hashCode();
     }
 }

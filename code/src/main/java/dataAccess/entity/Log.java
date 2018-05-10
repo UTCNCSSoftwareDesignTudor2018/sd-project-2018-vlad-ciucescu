@@ -5,12 +5,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "logs")
-public class Log {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private final Integer id;
+public class Log extends DataEntity {
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -24,18 +19,14 @@ public class Log {
     private Activity activity;
 
     public Log() {
-        this.id = 0;
+        super();
     }
 
     public Log(Integer id, Account account, Instant timestamp, Activity activity) {
-        this.id = id;
+        super(id);
         this.account = account;
         this.timestamp = timestamp;
         this.activity = activity;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public Account getAccount() {
@@ -65,8 +56,7 @@ public class Log {
     @Override
     public String toString() {
         return "Log{" +
-                "id=" + id +
-                ", account=" + account +
+                "account=" + account +
                 ", timestamp=" + timestamp +
                 ", activity=" + activity +
                 '}';
@@ -74,16 +64,11 @@ public class Log {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Log log = (Log) o;
-
-        return id != null ? id.equals(log.id) : log.id == null;
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
     }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public int hashCode(){
+        return super.hashCode();
     }
 }

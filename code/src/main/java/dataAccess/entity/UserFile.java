@@ -1,32 +1,24 @@
 package dataAccess.entity;
 
-import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "files")
-public class UserFile {
+public class UserFile extends DataEntity {
 
-    @Id @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name="uuid", strategy="uuid2")
-    private final String id;
     private String name;
     private String extension;
     private byte[] data;
 
     public UserFile() {
-        this.id = "";
+        super();
     }
 
-    public UserFile(String id, String name, String extension, byte[] data) {
-        this.id = id;
+    public UserFile(Integer id, String name, String extension, byte[] data) {
+        super(id);
         this.name = name;
         this.extension = extension;
         this.data = data;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {
@@ -56,21 +48,17 @@ public class UserFile {
     @Override
     public String toString() {
         return "UserFile{" +
-                "id=" + id +
-                ", name='" + name + '.' + extension + '\'' +
+                "name='" + name + '.' + extension + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserFile userFile = (UserFile) o;
-        return id.equals(userFile.id);
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return super.hashCode();
     }
 }

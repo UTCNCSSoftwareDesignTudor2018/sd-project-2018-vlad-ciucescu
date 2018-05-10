@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "activity")
-public class Activity {
+public class Activity extends DataEntity {
 
     enum ActivityType{
         LOGIN,
@@ -16,11 +16,6 @@ public class Activity {
         REQREPO;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Integer id;
-
     @Column(name = "description", nullable = false)
     @Enumerated(EnumType.STRING)
     private ActivityType type;
@@ -29,6 +24,30 @@ public class Activity {
     private Log log;
 
     public Activity() {
-        this.id = 0;
+        super();
+    }
+
+    public Activity(Integer id, ActivityType type, Log log) {
+        super(id);
+        this.type = type;
+        this.log = log;
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "type=" + type +
+                ", log=" + log +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o) && super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

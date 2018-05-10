@@ -6,18 +6,13 @@ import java.util.Set;
 @Entity
 @Table(name="accounts")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Account {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private final Integer id;
+public class Account extends DataEntity {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false, columnDefinition = "char(32)")
-    private Integer password;
+    private byte[] password;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -26,18 +21,14 @@ public class Account {
     private Set<Log> logs;
 
     public Account() {
-        this.id = 0;
+        super();
     }
 
-    public Account(Integer id, String username, Integer password, String email) {
-        this.id = id;
+    public Account(Integer id, String username, byte[] password, String email) {
+        super(id);
         this.username = username;
         this.password = password;
         this.email = email;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getUsername() {
@@ -48,11 +39,11 @@ public class Account {
         this.username = username;
     }
 
-    public Integer getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(Integer password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
@@ -75,8 +66,7 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
+                "username='" + username + '\'' +
                 ", password=" + password +
                 ", email='" + email + '\'' +
                 '}';
@@ -84,14 +74,11 @@ public class Account {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return id.equals(account.id);
+        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return super.hashCode();
     }
 }

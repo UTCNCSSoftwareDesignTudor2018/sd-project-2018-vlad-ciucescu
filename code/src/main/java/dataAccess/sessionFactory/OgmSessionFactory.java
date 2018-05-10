@@ -1,4 +1,4 @@
-package dataAccess.repository;
+package dataAccess.sessionFactory;
 
 import dataAccess.entity.UserFile;
 import org.hibernate.Session;
@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.ogm.cfg.OgmConfiguration;
 
-public class OgmSessionFactory {
+public class OgmSessionFactory implements SessionFactory {
 
     private static final String CONFIG = "hibernate.cfg2.xml";
     private Session session;
