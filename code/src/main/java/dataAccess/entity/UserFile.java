@@ -1,21 +1,21 @@
 package dataAccess.entity;
 
-import javax.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name = "files")
-public class UserFile extends DataEntity {
+import javax.persistence.*;
+import java.util.Arrays;
+
+public class UserFile {
 
     private String name;
     private String extension;
     private byte[] data;
 
     public UserFile() {
-        super();
+        name="file";
     }
 
-    public UserFile(Integer id, String name, String extension, byte[] data) {
-        super(id);
+    public UserFile(String name, String extension, byte[] data) {
         this.name = name;
         this.extension = extension;
         this.data = data;
@@ -54,11 +54,21 @@ public class UserFile extends DataEntity {
 
     @Override
     public boolean equals(Object o) {
-        return this == o || o != null && getClass() == o.getClass() && super.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserFile userFile = (UserFile) o;
+
+        if (!name.equals(userFile.name)) return false;
+        if (!extension.equals(userFile.extension)) return false;
+        return Arrays.equals(data, userFile.data);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = name.hashCode();
+        result = 31 * result + extension.hashCode();
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
     }
 }

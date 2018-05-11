@@ -1,9 +1,7 @@
-package dataAccess.repository;
+package dataAccess.sqlRepository;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import dataAccess.entity.Folder;
-import dataAccess.sessionFactory.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -16,15 +14,14 @@ import java.util.logging.Level;
 public class FolderRepository implements Repository<Folder> {
 
     @Inject
-    @Named("orm")
-    private SessionFactory sessionFactory;
+    private SessionFactory SessionFactory;
 
     private Transaction t;
 
 
     @Override
     public void persist(Folder obj) {
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -37,7 +34,7 @@ public class FolderRepository implements Repository<Folder> {
     public Optional<Folder> update(Folder obj) {
         Folder folder;
         Optional<Folder> folderOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
             folder = (Folder) session.merge(obj);
@@ -53,7 +50,7 @@ public class FolderRepository implements Repository<Folder> {
     public Optional<Folder> find(Integer id) {
         Folder folder;
         Optional<Folder> folderOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             folder = session.find(Folder.class, id);
             folderOptional = Optional.ofNullable(folder);
@@ -68,7 +65,7 @@ public class FolderRepository implements Repository<Folder> {
     @Override
     public List<Folder> findAll() {
         List<Folder> folders = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             Query<Folder> query = session.createQuery("from Folder", Folder.class);
             folders = query.list();
@@ -82,7 +79,7 @@ public class FolderRepository implements Repository<Folder> {
 
     @Override
     public void delete(Folder obj) {
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

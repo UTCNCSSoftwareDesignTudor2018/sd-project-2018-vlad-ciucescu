@@ -1,14 +1,14 @@
-package dataAccess.sessionFactory;
+package dataAccess.sqlRepository;
 
 import dataAccess.entity.*;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 
-public class OrmSessionFactory implements SessionFactory {
+public class OrmEMFactory implements SessionFactory {
 
     private Session session;
 
-    public OrmSessionFactory() { }
+    public OrmEMFactory() { }
 
     public Session getSession(){
         try {

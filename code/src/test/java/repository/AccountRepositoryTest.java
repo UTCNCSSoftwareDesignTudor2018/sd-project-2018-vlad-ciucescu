@@ -1,9 +1,8 @@
 package repository;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import dataAccess.entity.Account;
-import dataAccess.repository.Repository;
+import dataAccess.sqlRepository.Repository;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import static org.junit.Assert.*;
 public class AccountRepositoryTest extends RepositoryTest {
 
     @Inject
-    @Named("accRepo")
     private Repository<Account> repo;
 
     @Test

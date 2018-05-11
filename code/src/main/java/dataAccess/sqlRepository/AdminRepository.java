@@ -1,9 +1,7 @@
-package dataAccess.repository;
+package dataAccess.sqlRepository;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import dataAccess.entity.Admin;
-import dataAccess.sessionFactory.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -16,14 +14,13 @@ import java.util.logging.Level;
 public class AdminRepository implements Repository<Admin> {
 
     @Inject
-    @Named("orm")
-    private SessionFactory sessionFactory;
+    private SessionFactory SessionFactory;
 
     private Transaction t;
 
     @Override
     public void persist(Admin obj) {
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -36,7 +33,7 @@ public class AdminRepository implements Repository<Admin> {
     public Optional<Admin> update(Admin obj) {
         Admin admin;
         Optional<Admin> adminOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
             admin = (Admin) session.merge(obj);
@@ -52,7 +49,7 @@ public class AdminRepository implements Repository<Admin> {
     public Optional<Admin> find(Integer id) {
         Admin admin;
         Optional<Admin> adminOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             admin = session.find(Admin.class, id);
             adminOptional = Optional.ofNullable(admin);
@@ -67,7 +64,7 @@ public class AdminRepository implements Repository<Admin> {
     @Override
     public List<Admin> findAll() {
         List<Admin> admins = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             Query<Admin> query = session.createQuery("from Admin", Admin.class);
             admins = query.list();
@@ -81,7 +78,7 @@ public class AdminRepository implements Repository<Admin> {
 
     @Override
     public void delete(Admin obj) {
-        try (Session session = sessionFactory.getSession()) {
+        try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

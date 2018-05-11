@@ -1,4 +1,4 @@
-package dataAccess.repository;
+package dataAccess.sqlRepository;
 
 import dataAccess.entity.DataEntity;
 
