@@ -18,6 +18,8 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
 
     private Transaction t;
 
+    protected FileDescriptionRepository() {}
+
     @Override
     public void persist(FileDescription obj) {
         try (Session session = SessionFactory.getSession()) {

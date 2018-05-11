@@ -1,30 +1,36 @@
 package dataAccess.noSqlRepository;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import dataAccess.entity.UserFile;
+import dataAccess.sqlRepository.AccountRepository;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.mongodb.client.model.Filters.*;
 
-public class UserFileRepository implements MongoRepository {
+public class UserFileRepository {
+
+
+    static final Logger LOGGER = Logger.getLogger(AccountRepository.class.getName());
 
     @Inject
-    private MongoConnFactoryI connFactory;
+    private MongoConnFactory connFactory;
 
-    private UserFileAdapter adapter = new UserFileAdapter();
+    @Inject
+    private UserFileAdapter adapter;
 
     private String collection = "files";
 
-    @Override
+    public UserFileRepository() {}
+
     public void setCollection(String coll) {
         this.collection = coll;
     }
@@ -36,8 +42,6 @@ public class UserFileRepository implements MongoRepository {
 
     public void persist(UserFile obj) {
         try {
-			Optional<UserFile> opt = find(obj.getName(), obj.getExtension());
-            if (opt.isPresent()) return;
             Document document = adapter.getDocument(obj);
             getArticleCollection().insertOne(document);
         } catch (Exception e) {

@@ -2,8 +2,7 @@ package repository;
 
 import com.google.inject.Inject;
 import dataAccess.entity.UserFile;
-import dataAccess.noSqlRepository.MongoRepository;
-import org.junit.Ignore;
+import dataAccess.noSqlRepository.UserFileRepository;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class UserFileRepositoryTest extends RepositoryTest {
 
     @Inject
-    private MongoRepository repo;
+    private UserFileRepository repo;
 
     @Test
     public void findAllTest() {

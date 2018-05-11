@@ -18,6 +18,8 @@ public class ActivityRepository implements Repository<Activity> {
 
     private Transaction t;
 
+    protected ActivityRepository() {}
+
     @Override
     public void persist(Activity obj) {
         try (Session session = SessionFactory.getSession()) {

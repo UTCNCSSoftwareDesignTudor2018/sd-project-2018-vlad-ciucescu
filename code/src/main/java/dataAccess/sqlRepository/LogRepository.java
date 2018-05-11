@@ -18,6 +18,8 @@ public class LogRepository implements Repository<Log> {
 
     private Transaction t;
 
+    protected LogRepository() {}
+
     @Override
     public void persist(Log obj) {
         try (Session session = SessionFactory.getSession()) {

@@ -18,6 +18,8 @@ public class UserRepository implements Repository<User> {
 
     private Transaction t;
 
+    protected UserRepository() {}
+
     @Override
     public void persist(User obj) {
         try (Session session = SessionFactory.getSession()) {

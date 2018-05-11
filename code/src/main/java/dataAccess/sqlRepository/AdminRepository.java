@@ -18,6 +18,8 @@ public class AdminRepository implements Repository<Admin> {
 
     private Transaction t;
 
+    protected AdminRepository() {}
+
     @Override
     public void persist(Admin obj) {
         try (Session session = SessionFactory.getSession()) {

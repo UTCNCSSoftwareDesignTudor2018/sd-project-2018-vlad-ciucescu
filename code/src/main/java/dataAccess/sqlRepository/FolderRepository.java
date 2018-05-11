@@ -18,6 +18,7 @@ public class FolderRepository implements Repository<Folder> {
 
     private Transaction t;
 
+    protected FolderRepository() {}
 
     @Override
     public void persist(Folder obj) {

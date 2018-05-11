@@ -18,6 +18,8 @@ public class AccountRepository implements Repository<Account> {
 
     private Transaction t;
 
+    protected AccountRepository() {}
+
     @Override
     public void persist(Account obj) {
         try (Session session = SessionFactory.getSession()) {

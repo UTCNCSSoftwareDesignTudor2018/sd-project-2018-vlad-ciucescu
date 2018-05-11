@@ -3,11 +3,7 @@ package main;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import dataAccess.entity.*;
-import dataAccess.noSqlRepository.*;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 import dataAccess.sqlRepository.*;
-import dataAccess.sqlRepository.OrmEMFactory;
-import dataAccess.sqlRepository.SessionFactory;
 
 public class GuiceConfig extends AbstractModule {
     @Override
@@ -32,14 +28,5 @@ public class GuiceConfig extends AbstractModule {
 
         bind(new TypeLiteral<Repository<User>>(){})
                 .to(UserRepository.class);
-
-        bind(MongoRepository.class)
-                .to(UserFileRepository.class);
-
-        bind(SessionFactory.class)
-                .to(OrmEMFactory.class);
-
-        bind(MongoConnFactoryI.class)
-                .to(MongoConnFactory.class);
     }
 }

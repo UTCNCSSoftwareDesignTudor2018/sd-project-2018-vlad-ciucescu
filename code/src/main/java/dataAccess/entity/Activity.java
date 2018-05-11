@@ -6,16 +6,6 @@ import javax.persistence.*;
 @Table(name = "activity")
 public class Activity extends DataEntity {
 
-    enum ActivityType{
-        LOGIN,
-        LOGOUT,
-        ADDFILE,
-        RMFILE,
-        DLFILE,
-        SEARCH,
-        REQREPO;
-    }
-
     @Column(name = "description", nullable = false)
     @Enumerated(EnumType.STRING)
     private ActivityType type;
