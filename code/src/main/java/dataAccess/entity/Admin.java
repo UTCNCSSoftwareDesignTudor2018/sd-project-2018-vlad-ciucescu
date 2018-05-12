@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="admins")
+@Table(name = "admins")
 public class Admin extends Account {
 
     public Admin() {
@@ -19,7 +19,6 @@ public class Admin extends Account {
     public String toString() {
         return "Admin{" +
                 "username='" + this.getUsername() + '\'' +
-                ", password=" + this.getPassword() +
                 ", email='" + this.getEmail() + '\'' +
                 '}';
     }

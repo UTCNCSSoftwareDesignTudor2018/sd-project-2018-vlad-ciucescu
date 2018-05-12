@@ -18,7 +18,8 @@ public class LogRepository implements Repository<Log> {
 
     private Transaction t;
 
-    protected LogRepository() {}
+    protected LogRepository() {
+    }
 
     @Override
     public void persist(Log obj) {
@@ -27,7 +28,7 @@ public class LogRepository implements Repository<Log> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Log persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Log persist exception: " + e.toString(), e);
         }
     }
 
@@ -38,11 +39,11 @@ public class LogRepository implements Repository<Log> {
         try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
-            log = (Log)session.merge(obj);
+            log = (Log) session.merge(obj);
             logOptional = Optional.ofNullable(log);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Log update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Log update exception: " + e.toString(), e);
         }
         return logOptional;
     }
@@ -56,9 +57,8 @@ public class LogRepository implements Repository<Log> {
             log = session.find(Log.class, id);
             logOptional = Optional.ofNullable(log);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Log find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Log find exception: " + e.toString(), e);
         }
         return logOptional;
     }
@@ -71,9 +71,8 @@ public class LogRepository implements Repository<Log> {
             Query<Log> query = session.createQuery("from Log", Log.class);
             logs = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Log find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Log find exception: " + e.toString(), e);
         }
         return logs;
     }
@@ -84,9 +83,8 @@ public class LogRepository implements Repository<Log> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Log delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Log delete exception: " + e.toString(), e);
         }
     }
 }

@@ -18,7 +18,8 @@ public class AdminRepository implements Repository<Admin> {
 
     private Transaction t;
 
-    protected AdminRepository() {}
+    protected AdminRepository() {
+    }
 
     @Override
     public void persist(Admin obj) {
@@ -27,7 +28,7 @@ public class AdminRepository implements Repository<Admin> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Admin persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Admin persist exception: " + e.toString(), e);
         }
     }
 
@@ -42,7 +43,7 @@ public class AdminRepository implements Repository<Admin> {
             adminOptional = Optional.ofNullable(admin);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Admin update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Admin update exception: " + e.toString(), e);
         }
         return adminOptional;
     }
@@ -56,9 +57,8 @@ public class AdminRepository implements Repository<Admin> {
             admin = session.find(Admin.class, id);
             adminOptional = Optional.ofNullable(admin);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Admin find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Admin find exception: " + e.toString(), e);
         }
         return adminOptional;
     }
@@ -71,9 +71,8 @@ public class AdminRepository implements Repository<Admin> {
             Query<Admin> query = session.createQuery("from Admin", Admin.class);
             admins = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Admin find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Admin find exception: " + e.toString(), e);
         }
         return admins;
     }
@@ -84,9 +83,8 @@ public class AdminRepository implements Repository<Admin> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Admin delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Admin delete exception: " + e.toString(), e);
         }
     }
 }

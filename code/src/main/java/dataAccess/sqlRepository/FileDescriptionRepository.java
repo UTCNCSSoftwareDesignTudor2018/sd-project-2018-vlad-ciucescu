@@ -18,7 +18,8 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
 
     private Transaction t;
 
-    protected FileDescriptionRepository() {}
+    protected FileDescriptionRepository() {
+    }
 
     @Override
     public void persist(FileDescription obj) {
@@ -27,7 +28,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "File description persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "File description persist exception: " + e.toString(), e);
         }
     }
 
@@ -42,7 +43,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
             descriptionOptional = Optional.ofNullable(fileDescription);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "File description update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "File description update exception: " + e.toString(), e);
         }
         return descriptionOptional;
     }
@@ -56,9 +57,8 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
             fileDescription = session.find(FileDescription.class, id);
             descriptionOptional = Optional.ofNullable(fileDescription);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "File description find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "File description find exception: " + e.toString(), e);
         }
         return descriptionOptional;
     }
@@ -71,9 +71,8 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
             Query<FileDescription> query = session.createQuery("from FileDescription", FileDescription.class);
             descriptions = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "File description find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "File description find exception: " + e.toString(), e);
         }
         return descriptions;
     }
@@ -84,9 +83,8 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "File description delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "File description delete exception: " + e.toString(), e);
         }
     }
 }

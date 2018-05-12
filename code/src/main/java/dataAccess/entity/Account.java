@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="accounts")
+@Table(name = "accounts")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Account extends DataEntity {
 
@@ -67,7 +67,6 @@ public class Account extends DataEntity {
     public String toString() {
         return "Account{" +
                 "username='" + username + '\'' +
-                ", password=" + password +
                 ", email='" + email + '\'' +
                 '}';
     }

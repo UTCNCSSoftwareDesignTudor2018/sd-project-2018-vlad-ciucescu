@@ -68,7 +68,7 @@ public class Log extends DataEntity {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return super.hashCode();
     }
 }

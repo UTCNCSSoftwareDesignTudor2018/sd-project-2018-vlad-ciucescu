@@ -18,7 +18,8 @@ public class UserRepository implements Repository<User> {
 
     private Transaction t;
 
-    protected UserRepository() {}
+    protected UserRepository() {
+    }
 
     @Override
     public void persist(User obj) {
@@ -27,7 +28,7 @@ public class UserRepository implements Repository<User> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "User persist exception: " + e.toString(), e);
         }
     }
 
@@ -38,11 +39,11 @@ public class UserRepository implements Repository<User> {
         try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
-            user = (User)session.merge(obj);
+            user = (User) session.merge(obj);
             userOptional = Optional.ofNullable(user);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "User update exception: " + e.toString(), e);
         }
         return userOptional;
     }
@@ -56,9 +57,8 @@ public class UserRepository implements Repository<User> {
             user = session.find(User.class, id);
             userOptional = Optional.ofNullable(user);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "User find exception: " + e.toString(), e);
         }
         return userOptional;
     }
@@ -71,9 +71,8 @@ public class UserRepository implements Repository<User> {
             Query<User> query = session.createQuery("from User", User.class);
             users = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "User find exception: " + e.toString(), e);
         }
         return users;
     }
@@ -84,9 +83,8 @@ public class UserRepository implements Repository<User> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "User delete exception: " + e.toString(), e);
         }
     }
 }

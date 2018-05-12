@@ -18,7 +18,8 @@ public class ActivityRepository implements Repository<Activity> {
 
     private Transaction t;
 
-    protected ActivityRepository() {}
+    protected ActivityRepository() {
+    }
 
     @Override
     public void persist(Activity obj) {
@@ -27,7 +28,7 @@ public class ActivityRepository implements Repository<Activity> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Activity persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Activity persist exception: " + e.toString(), e);
         }
     }
 
@@ -38,11 +39,11 @@ public class ActivityRepository implements Repository<Activity> {
         try (Session session = SessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
-            activity = (Activity)session.merge(obj);
+            activity = (Activity) session.merge(obj);
             activityOptional = Optional.ofNullable(activity);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Activity update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Activity update exception: " + e.toString(), e);
         }
         return activityOptional;
     }
@@ -56,9 +57,8 @@ public class ActivityRepository implements Repository<Activity> {
             activity = session.find(Activity.class, id);
             activityOptional = Optional.ofNullable(activity);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Activity find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Activity find exception: " + e.toString(), e);
         }
         return activityOptional;
     }
@@ -71,9 +71,8 @@ public class ActivityRepository implements Repository<Activity> {
             Query<Activity> query = session.createQuery("from Activity", Activity.class);
             activities = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Activity find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Activity find exception: " + e.toString(), e);
         }
         return activities;
     }
@@ -84,9 +83,8 @@ public class ActivityRepository implements Repository<Activity> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Activity delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Activity delete exception: " + e.toString(), e);
         }
     }
 }

@@ -6,11 +6,10 @@ import org.hibernate.cfg.Configuration;
 
 public class SessionFactory {
 
-    private Session session;
+    public SessionFactory() {
+    }
 
-    public SessionFactory() { }
-
-    public Session getSession(){
+    public Session getSession() {
         try {
             Configuration configuration = new Configuration()
                     .addPackage("dataAccess.entity")
@@ -22,8 +21,7 @@ public class SessionFactory {
                     .addAnnotatedClass(Log.class)
                     .addAnnotatedClass(Activity.class);
             configuration.configure();
-            session = configuration.buildSessionFactory().openSession();
-            return session;
+            return configuration.buildSessionFactory().openSession();
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }

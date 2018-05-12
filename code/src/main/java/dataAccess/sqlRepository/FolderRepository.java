@@ -18,7 +18,8 @@ public class FolderRepository implements Repository<Folder> {
 
     private Transaction t;
 
-    protected FolderRepository() {}
+    protected FolderRepository() {
+    }
 
     @Override
     public void persist(Folder obj) {
@@ -27,7 +28,7 @@ public class FolderRepository implements Repository<Folder> {
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Folder persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Folder persist exception: " + e.toString(), e);
         }
     }
 
@@ -42,7 +43,7 @@ public class FolderRepository implements Repository<Folder> {
             folderOptional = Optional.ofNullable(folder);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Folder update exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Folder update exception: " + e.toString(), e);
         }
         return folderOptional;
     }
@@ -56,9 +57,8 @@ public class FolderRepository implements Repository<Folder> {
             folder = session.find(Folder.class, id);
             folderOptional = Optional.ofNullable(folder);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Folder find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Folder find exception: " + e.toString(), e);
         }
         return folderOptional;
     }
@@ -71,9 +71,8 @@ public class FolderRepository implements Repository<Folder> {
             Query<Folder> query = session.createQuery("from Folder", Folder.class);
             folders = query.list();
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Folder find exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Folder find exception: " + e.toString(), e);
         }
         return folders;
     }
@@ -84,9 +83,8 @@ public class FolderRepository implements Repository<Folder> {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Folder delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Folder delete exception: " + e.toString(), e);
         }
     }
 }

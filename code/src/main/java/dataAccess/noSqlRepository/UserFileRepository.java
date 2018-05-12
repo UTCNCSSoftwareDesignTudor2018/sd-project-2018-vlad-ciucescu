@@ -14,10 +14,10 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 public class UserFileRepository {
-
 
     static final Logger LOGGER = Logger.getLogger(AccountRepository.class.getName());
 
@@ -29,7 +29,8 @@ public class UserFileRepository {
 
     private String collection = "files";
 
-    public UserFileRepository() {}
+    public UserFileRepository() {
+    }
 
     public void setCollection(String coll) {
         this.collection = coll;
@@ -45,7 +46,7 @@ public class UserFileRepository {
             Document document = adapter.getDocument(obj);
             getArticleCollection().insertOne(document);
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User file persist exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "User file persist exception: " + e.toString(), e);
         }
     }
 
@@ -73,11 +74,10 @@ public class UserFileRepository {
     public List<UserFile> findAll() {
         List<UserFile> userFiles = new ArrayList<>();
         try {
-            Block<Document> addToList = (d->userFiles.add(adapter.getUserFile(d)));
+            Block<Document> addToList = (d -> userFiles.add(adapter.getUserFile(d)));
             getArticleCollection().find().forEach(addToList);
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User file find all exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "User file find all exception: " + e.toString(), e);
         }
         return userFiles;
     }
@@ -86,9 +86,8 @@ public class UserFileRepository {
         try {
             Document document = adapter.getDocument(obj);
             getArticleCollection().deleteOne(document);
-        }
-        catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "User file delete exception: " + e.toString(), e );
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "User file delete exception: " + e.toString(), e);
         }
     }
 }

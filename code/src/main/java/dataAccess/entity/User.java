@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User extends Account {
 
-    @Column(name="blocked", nullable=false)
+    @Column(name = "blocked", nullable = false)
     private Boolean blocked;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -34,7 +34,6 @@ public class User extends Account {
     public String toString() {
         return "User{" +
                 "username='" + this.getUsername() + '\'' +
-                ", password=" + this.getPassword() +
                 ", email='" + this.getEmail() + '\'' +
                 "blocked=" + blocked +
                 '}';

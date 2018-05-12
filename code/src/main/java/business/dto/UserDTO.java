@@ -1,21 +1,22 @@
-package dataAccess.business.dto;
+package business.dto;
 
-public class AdminDTO extends AccountDTO {
+public class UserDTO extends AccountDTO {
 
-    public AdminDTO() {
+    public UserDTO() {
         super();
     }
 
-    public AdminDTO(String username, String password, String email) {
+    public UserDTO(String username, String password, String email) {
         super(username, password, email);
     }
 
     @Override
     public String toString() {
-        return "AdminDTO{" +
+        return "UserDTO{" +
                 "username='" + this.getUsername() + '\'' +
                 ", password='" + this.getPassword() + '\'' +
                 ", email='" + this.getEmail() + '\'' +
                 '}';
     }
+
 }

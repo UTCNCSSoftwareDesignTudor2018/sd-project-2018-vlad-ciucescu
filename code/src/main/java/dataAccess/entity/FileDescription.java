@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name="file_descriptions")
+@Table(name = "file_descriptions")
 public class FileDescription extends DataEntity {
 
     @ManyToOne
@@ -80,7 +80,7 @@ public class FileDescription extends DataEntity {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return super.hashCode();
     }
 }

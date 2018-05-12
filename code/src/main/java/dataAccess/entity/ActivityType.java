@@ -1,11 +1,11 @@
 package dataAccess.entity;
 
-public enum ActivityType{
+public enum ActivityType {
     LOGIN,
     LOGOUT,
     ADDFILE,
     RMFILE,
     DLFILE,
     SEARCH,
-    REQREPO;
+    REQREPO
 }

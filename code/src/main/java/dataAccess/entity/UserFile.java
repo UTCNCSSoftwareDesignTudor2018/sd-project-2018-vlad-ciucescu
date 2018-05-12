@@ -1,8 +1,5 @@
 package dataAccess.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.util.Arrays;
 
 public class UserFile {
@@ -12,7 +9,7 @@ public class UserFile {
     private byte[] data;
 
     public UserFile() {
-        name="file";
+        name = "file";
     }
 
     public UserFile(String name, String extension, byte[] data) {

@@ -14,7 +14,9 @@ public abstract class DataEntity {
         this.id = 0;
     }
 
-    public DataEntity(Integer id) {this.id = id;}
+    public DataEntity(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;

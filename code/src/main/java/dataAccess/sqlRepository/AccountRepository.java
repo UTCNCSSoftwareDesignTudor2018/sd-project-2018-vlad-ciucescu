@@ -86,7 +86,7 @@ public class AccountRepository implements Repository<Account> {
             t.commit();
         }
         catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Account delete exception: " + e.toString(), e );
+            LOGGER.log(Level.SEVERE, "Account delete exception: " + e.toString(), e);
         }
     }
 }
