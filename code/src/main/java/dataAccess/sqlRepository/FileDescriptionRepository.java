@@ -14,7 +14,7 @@ import java.util.logging.Level;
 public class FileDescriptionRepository implements Repository<FileDescription> {
 
     @Inject
-    private SessionFactory SessionFactory;
+    private SessionFactory sessionFactory;
 
     private Transaction t;
 
@@ -23,7 +23,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
 
     @Override
     public void persist(FileDescription obj) {
-        try (Session session = SessionFactory.getSession()) {
+        try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -36,7 +36,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
     public Optional<FileDescription> update(FileDescription obj) {
         FileDescription fileDescription;
         Optional<FileDescription> descriptionOptional = Optional.empty();
-        try (Session session = SessionFactory.getSession()) {
+        try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.evict(obj);
             fileDescription = (FileDescription) session.merge(obj);
@@ -52,7 +52,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
     public Optional<FileDescription> find(Integer id) {
         FileDescription fileDescription;
         Optional<FileDescription> descriptionOptional = Optional.empty();
-        try (Session session = SessionFactory.getSession()) {
+        try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             fileDescription = session.find(FileDescription.class, id);
             descriptionOptional = Optional.ofNullable(fileDescription);
@@ -66,7 +66,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
     @Override
     public List<FileDescription> findAll() {
         List<FileDescription> descriptions = new ArrayList<>();
-        try (Session session = SessionFactory.getSession()) {
+        try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             Query<FileDescription> query = session.createQuery("from FileDescription", FileDescription.class);
             descriptions = query.list();
@@ -79,7 +79,7 @@ public class FileDescriptionRepository implements Repository<FileDescription> {
 
     @Override
     public void delete(FileDescription obj) {
-        try (Session session = SessionFactory.getSession()) {
+        try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

@@ -34,4 +34,5 @@ public class PasswordService implements Service {
     public Boolean match(String pass, byte[] hash) {
         return Arrays.equals(hash, hash(pass));
     }
+
 }

@@ -1,12 +1,14 @@
 package business.dto;
 
+import dataAccess.entity.FileDescription;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 
-public class FileDescriptionDTO implements DataTransferObject {
+public class FileDescriptionDTO extends DataTransferObject {
 
     @Size(min = 1, max = 45, message = "File name must be between 1 and 45 characters.")
     private final String name;
@@ -25,10 +27,15 @@ public class FileDescriptionDTO implements DataTransferObject {
         this.addTime = Instant.now();
     }
 
-    public FileDescriptionDTO(String name, Long size, Instant addTime) {
+    public FileDescriptionDTO(Integer id, String name, Long size, Instant addTime) {
+        super(id);
         this.name = name;
         this.size = size;
         this.addTime = addTime;
+    }
+
+    public FileDescriptionDTO(FileDescription fd) {
+        this(fd.getId(), fd.getName(), fd.getSize(), fd.getAddTime());
     }
 
     public String getName() {

@@ -1,40 +1,40 @@
 package business.dto;
 
+import dataAccess.entity.Account;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Arrays;
 
-public class AccountDTO implements DataTransferObject {
+public class AccountDTO extends DataTransferObject {
 
-    @NotNull(message = "Account username cannot be null.")
-    @Size(min = 3, max = 20, message = "Account username must be between 3 and 20 characters.")
     private final String username;
-
-    @NotNull(message = "Account password cannot be null.")
-    @Size(min = 5, message = "Account password  have at least 5 characters.")
-    private final String password;
-
-    @NotNull(message = "Account email cannot be null.")
-    @Email(message = "Account email must be valid.")
+    private final byte[] password;
     private final String email;
 
     public AccountDTO() {
         this.username = "username";
-        this.password = "password";
+        this.password = new byte[]{};
         this.email = "email";
     }
 
-    public AccountDTO(String username, String password, String email) {
+    public AccountDTO(Integer id, String username, byte[] password, String email) {
+        super(id);
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public AccountDTO(Account acc){
+        this(acc.getId(), acc.getUsername(), acc.getPassword(), acc.getEmail());
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
@@ -46,7 +46,6 @@ public class AccountDTO implements DataTransferObject {
     public String toString() {
         return "AccountDTO{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
@@ -58,13 +57,13 @@ public class AccountDTO implements DataTransferObject {
 
         AccountDTO that = (AccountDTO) o;
 
-        return username.equals(that.username) && password.equals(that.password) && email.equals(that.email);
+        return username.equals(that.username) && Arrays.equals(password, that.password) && email.equals(that.email);
     }
 
     @Override
     public int hashCode() {
         int result = username.hashCode();
-        result = 31 * result + password.hashCode();
+        result = 31 * result + Arrays.hashCode(password);
         result = 31 * result + email.hashCode();
         return result;
     }

@@ -2,6 +2,7 @@ package repository;
 
 import com.google.inject.Inject;
 import dataAccess.entity.Account;
+import dataAccess.sqlRepository.AccountRepository;
 import dataAccess.sqlRepository.Repository;
 import org.junit.Test;
 
@@ -14,11 +15,20 @@ import static org.junit.Assert.*;
 public class AccountRepositoryTest extends RepositoryTest {
 
     @Inject
-    private Repository<Account> repo;
+    private AccountRepository repo;
 
     @Test
     public void findTest() {
         Optional<Account> acc = repo.find(6);
+        assertTrue(acc.isPresent());
+        Account actual = acc.get();
+        Account expected = new Account(6, "test", new byte[]{0}, "mail");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findByUsernameTest() {
+        Optional<Account> acc = repo.findByUsername("test");
         assertTrue(acc.isPresent());
         Account actual = acc.get();
         Account expected = new Account(6, "test", new byte[]{0}, "mail");

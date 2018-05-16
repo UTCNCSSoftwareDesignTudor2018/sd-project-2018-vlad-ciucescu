@@ -1,10 +1,12 @@
 package business.dto;
 
+import dataAccess.entity.Folder;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class FolderDTO implements DataTransferObject {
+public class FolderDTO extends DataTransferObject {
 
     @Size(min = 1, max = 20, message = "Repository name must be between 1 and 20 characters.")
     private final String name;
@@ -18,9 +20,14 @@ public class FolderDTO implements DataTransferObject {
         this.maxSize = 1000L;
     }
 
-    public FolderDTO(String name, Long maxSize) {
+    public FolderDTO(Integer id, String name, Long maxSize) {
+        super(id);
         this.name = name;
         this.maxSize = maxSize;
+    }
+
+    public FolderDTO(Folder folder) {
+        this(folder.getId(), folder.getRepositoryName(), folder.getMaxSize());
     }
 
     public String getName() {

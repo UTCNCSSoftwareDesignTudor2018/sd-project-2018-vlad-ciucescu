@@ -22,6 +22,10 @@ public class User extends Account {
         this.blocked = blocked;
     }
 
+    public User(Account acc) {
+        this(acc.getId(), acc.getUsername(), acc.getPassword(), acc.getEmail(), false);
+    }
+
     public Boolean getBlocked() {
         return blocked;
     }

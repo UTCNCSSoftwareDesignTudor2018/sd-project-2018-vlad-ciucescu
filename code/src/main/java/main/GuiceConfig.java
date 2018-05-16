@@ -1,7 +1,6 @@
 package main;
 
-import business.dto.*;
-import business.service.ValidationService;
+import business.service.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import dataAccess.entity.*;
@@ -32,11 +31,11 @@ public class GuiceConfig extends AbstractModule {
         bind(new TypeLiteral<Repository<User>>(){})
                 .to(UserRepository.class);
 
-        bind(new TypeLiteral<ValidationService<AccountDTO>>(){});
-        bind(new TypeLiteral<ValidationService<AdminDTO>>(){});
-        bind(new TypeLiteral<ValidationService<FileDescriptionDTO>>(){});
-        bind(new TypeLiteral<ValidationService<FolderDTO>>(){});
-        bind(new TypeLiteral<ValidationService<LogDTO>>(){});
-        bind(new TypeLiteral<ValidationService<UserDTO>>(){});
+        bind(new TypeLiteral<ValidationService<AccountService>>(){});
+        bind(new TypeLiteral<ValidationService<AdminService>>(){});
+        bind(new TypeLiteral<ValidationService<FileDescriptionService>>(){});
+        bind(new TypeLiteral<ValidationService<FolderService>>(){});
+        bind(new TypeLiteral<ValidationService<LogService>>(){});
+        bind(new TypeLiteral<ValidationService<UserService>>(){});
     }
 }

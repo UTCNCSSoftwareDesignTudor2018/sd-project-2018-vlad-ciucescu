@@ -10,7 +10,7 @@ public class Activity extends DataEntity {
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
-    @OneToOne(mappedBy = "activity", cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "activity", cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     private Log log;
 
     public Activity() {
@@ -20,6 +20,22 @@ public class Activity extends DataEntity {
     public Activity(Integer id, ActivityType type, Log log) {
         super(id);
         this.type = type;
+        this.log = log;
+    }
+
+    public ActivityType getType() {
+        return type;
+    }
+
+    public void setType(ActivityType type) {
+        this.type = type;
+    }
+
+    public Log getLog() {
+        return log;
+    }
+
+    public void setLog(Log log) {
         this.log = log;
     }
 

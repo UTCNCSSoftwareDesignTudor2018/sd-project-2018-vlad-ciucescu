@@ -1,12 +1,13 @@
 package business.dto;
 
 import dataAccess.entity.ActivityType;
+import dataAccess.entity.Log;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.Instant;
 
-public class LogDTO implements DataTransferObject {
+public class LogDTO extends DataTransferObject {
 
     @NotNull(message = "Log timestamp cannot be null.")
     @PastOrPresent(message = "Log timestamp must be in past or present time.")
@@ -20,9 +21,14 @@ public class LogDTO implements DataTransferObject {
         this.activityType = ActivityType.LOGIN;
     }
 
-    public LogDTO(Instant timestamp, ActivityType activityType) {
+    public LogDTO(Integer id, Instant timestamp, ActivityType activityType) {
+        super(id);
         this.timestamp = timestamp;
         this.activityType = activityType;
+    }
+
+    public LogDTO(Log log) {
+        this(log.getId(), log.getTimestamp(), log.getActivity().getType());
     }
 
     public Instant getTimestamp() {
