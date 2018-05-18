@@ -21,18 +21,18 @@ public class AccountRepository implements Repository<Account> {
     protected AccountRepository() {}
 
     @Override
-    public void persist(Account obj) {
+    public void persist(Account obj) throws Exception {
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Account persist exception: " + e.toString(), e );
+           throw new Exception("Account persist exception: " + e.toString(), e );
         }
     }
 
     @Override
-    public Optional<Account> update(Account obj) {
+    public Optional<Account> update(Account obj) throws Exception {
         Account account;
         Optional<Account> accountOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -42,13 +42,13 @@ public class AccountRepository implements Repository<Account> {
             accountOptional = Optional.ofNullable(account);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Account update exception: " + e.toString(), e );
+            throw new Exception("Account update exception: " + e.toString(), e );
         }
         return accountOptional;
     }
 
     @Override
-    public Optional<Account> find(Integer id) {
+    public Optional<Account> find(Integer id) throws Exception {
         Account account;
         Optional<Account> accountOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -58,13 +58,13 @@ public class AccountRepository implements Repository<Account> {
             t.commit();
         }
         catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Account find exception: " + e.toString(), e );
+            throw new Exception("Account find exception: " + e.toString(), e );
         }
         return accountOptional;
     }
 
     @Override
-    public List<Account> findAll() {
+    public List<Account> findAll() throws Exception {
         List<Account> accounts = new ArrayList<>();
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
@@ -73,20 +73,20 @@ public class AccountRepository implements Repository<Account> {
             t.commit();
         }
         catch (Exception e) {
-            LOGGER.log( Level.SEVERE, "Account find exception: " + e.toString(), e );
+            throw new Exception("Account find exception: " + e.toString(), e );
         }
         return accounts;
     }
 
     @Override
-    public void delete(Account obj) {
+    public void delete(Account obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
         }
         catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Account delete exception: " + e.toString(), e);
+            throw new Exception("Account delete exception: " + e.toString(), e);
         }
     }
 }

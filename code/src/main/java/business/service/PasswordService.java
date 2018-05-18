@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-public class PasswordService implements Service {
+public class PasswordService extends Service {
 
     public PasswordService() {
     }

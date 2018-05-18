@@ -8,11 +8,7 @@ import javax.validation.constraints.Size;
 
 public class FolderDTO extends DataTransferObject {
 
-    @Size(min = 1, max = 20, message = "Repository name must be between 1 and 20 characters.")
     private final String name;
-
-    @NotNull(message = "Repository max size cannot be null.")
-    @Max(value = 104857600, message = "Repository max size is 100Mb(104857600 bytes).")
     private final Long maxSize;
 
     public FolderDTO() {

@@ -14,7 +14,9 @@ import javax.validation.constraints.Size;
 import java.util.Optional;
 import java.util.Set;
 
-public class UserService implements Service {
+import static dataAccess.entity.ActivityType.*;
+
+public class UserService extends Service {
 
     @Inject
     private AccountRepository accountRepository;
@@ -26,7 +28,7 @@ public class UserService implements Service {
     private FolderService folderService;
 
     @Inject
-    private ValidationService<UserService> validatorService;
+    private ValidationService<UserService> validationService;
 
     @Inject
     private EmailService emailService;
@@ -34,39 +36,51 @@ public class UserService implements Service {
     @Inject
     private PasswordService passwordService;
 
+    @Inject
+    private LogService logService;
+
     public UserService() {
+        injector.injectMembers(this);
     }
 
-    public Optional<UserDTO> logIn(@NotNull(message = "Account username cannot be null.")String username,
-                                   @NotNull(message = "Account password cannot be null.")String pass) {
-        //validationService.validateMethod(this, UserService.class.getMethod("logIn", String.class, String.class), username, pass);
+    public UserDTO logIn(@NotNull(message = "Account username cannot be null.")String username,
+                                   @NotNull(message = "Account password cannot be null.")String pass)
+                                    throws Exception{
+        Set<String> errors = validationService.validateMethod(this, UserService.class.getMethod("logIn", String.class, String.class), username, pass);
+        if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         Optional<User> opt = userRepository.findByUsername(username);
-        if (!opt.isPresent()) return Optional.empty();
-        if (!passwordService.match(pass, opt.get().getPassword())) return Optional.empty();
+        if (!opt.isPresent()) throw new Exception("Error: Invalid account.");
+        if (!passwordService.match(pass, opt.get().getPassword())) throw new Exception("Error: Invalid password.");
         User acc = opt.get();
-        if (acc.getBlocked()) return Optional.empty();
-        return opt.map(UserDTO::new);
+        if (acc.getBlocked()) throw new Exception("Error: account blocked.");
+        logService.log(acc, LOGIN);
+        return new UserDTO(acc);
     }
 
-    public Optional<User> createAccount(@NotNull(message = "Account username cannot be null.")
+    public UserDTO createAccount(@NotNull(message = "Account username cannot be null.")
                                         @Size(min = 3, max = 20, message = "Account username must be between 3 and 20 characters.")String username,
                                         @NotNull(message = "Account email cannot be null.")
-                                        @Email(message = "Account email must be valid.")String email) {
-        //validationService.validateMethod(this, UserService.class.getMethod("createAccount", String.class, String.class), username, email);
+                                        @Email(message = "Account email must be valid.")String email)
+                                        throws Exception{
+        Set<String> errors = validationService.validateMethod(this, UserService.class.getMethod("createAccount", String.class, String.class), username, email);
+        if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         String tempPass = passwordService.randomPass(10);
         Account acc = new Account(0, username, passwordService.hash(tempPass), email);
         accountRepository.persist(acc);
         User user = new User(acc);
         userRepository.persist(user);
-        folderService.createRepo(user);
+        folderService.createRepo(user, 20*1024*1024L, "repository1");
         emailService.sendMail(email, "Account created", "Username: " + username + "\nPassword: " + tempPass + "\n\nPlease do no reply do this email.");
-        return Optional.of(user);
+        logService.log(user, CREATEACC);
+        return new UserDTO(user);
     }
 
-    public void setBlockStatus(UserDTO dto, boolean blocked) {
+    public void setBlockStatus(UserDTO dto, boolean blocked) throws Exception{
         Optional<User> opt = userRepository.find(dto.getId());
-        if (!opt.isPresent()) return;
+        if (!opt.isPresent()) throw new Exception("Error: Invalid account.");
         User acc = opt.get();
         acc.setBlocked(blocked);
+
+        logService.log(acc, blocked?BLOCKED:UNBLOCKED);
     }
 }

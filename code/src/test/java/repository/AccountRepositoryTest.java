@@ -18,7 +18,7 @@ public class AccountRepositoryTest extends RepositoryTest {
     private AccountRepository repo;
 
     @Test
-    public void findTest() {
+    public void findTest() throws Exception{
         Optional<Account> acc = repo.find(6);
         assertTrue(acc.isPresent());
         Account actual = acc.get();
@@ -27,16 +27,7 @@ public class AccountRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    public void findByUsernameTest() {
-        Optional<Account> acc = repo.findByUsername("test");
-        assertTrue(acc.isPresent());
-        Account actual = acc.get();
-        Account expected = new Account(6, "test", new byte[]{0}, "mail");
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findAllTest() {
+    public void findAllTest() throws Exception{
         List<Account> expected = new ArrayList<>();
         expected.add(new Account(6, "test", new byte[]{0}, "mail"));
         expected.add(new Account(7, "test3", new byte[]{0}, "mail3"));
@@ -45,7 +36,7 @@ public class AccountRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    public void persistTest() {
+    public void persistTest() throws Exception{
         Account inserted = new Account(0, "test2", new byte[]{0}, "mail2");
         repo.persist(inserted);
         List<Account> accounts = repo.findAll();
@@ -54,7 +45,7 @@ public class AccountRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateTest() throws Exception{
         Optional<Account> acc = repo.find(6);
         Account actual = acc.get();
         actual.setUsername("changed");
@@ -67,7 +58,7 @@ public class AccountRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void deleteTest() throws Exception {
         Account inserted = new Account(0, "test2", new byte[]{0}, "mail2");
         repo.persist(inserted);
         repo.delete(inserted);

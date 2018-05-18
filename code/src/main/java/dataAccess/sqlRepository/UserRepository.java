@@ -23,18 +23,18 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public void persist(User obj) {
+    public void persist(User obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "User persist exception: " + e.toString(), e);
+            throw new Exception("User persist exception: " + e.toString(), e);
         }
     }
 
     @Override
-    public Optional<User> update(User obj) {
+    public Optional<User> update(User obj) throws Exception{
         User user;
         Optional<User> userOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -44,13 +44,13 @@ public class UserRepository implements Repository<User> {
             userOptional = Optional.ofNullable(user);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "User update exception: " + e.toString(), e);
+            throw new Exception("User update exception: " + e.toString(), e);
         }
         return userOptional;
     }
 
     @Override
-    public Optional<User> find(Integer id) {
+    public Optional<User> find(Integer id) throws Exception{
         User user;
         Optional<User> userOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -59,12 +59,12 @@ public class UserRepository implements Repository<User> {
             userOptional = Optional.ofNullable(user);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "User find exception: " + e.toString(), e);
+            throw new Exception("User find exception: " + e.toString(), e);
         }
         return userOptional;
     }
 
-    public Optional<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) throws Exception{
 
         Optional<User> accountOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -73,12 +73,14 @@ public class UserRepository implements Repository<User> {
             q.setParameter("username", username);
             List res = q.list();
             if (!res.isEmpty()) accountOptional = Optional.ofNullable((User)res.get(0));
+        } catch (Exception e) {
+            throw new Exception("User find exception: " + e.toString(), e);
         }
         return accountOptional;
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws Exception{
         List<User> users = new ArrayList<>();
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
@@ -86,19 +88,19 @@ public class UserRepository implements Repository<User> {
             users = query.list();
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "User find exception: " + e.toString(), e);
+            throw new Exception("User find exception: " + e.toString(), e);
         }
         return users;
     }
 
     @Override
-    public void delete(User obj) {
+    public void delete(User obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "User delete exception: " + e.toString(), e);
+            throw new Exception("User delete exception: " + e.toString(), e);
         }
     }
 }

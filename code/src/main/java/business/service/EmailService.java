@@ -9,9 +9,12 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.logging.Level;
 
-public class EmailService implements Service {
+public class EmailService extends Service {
 
-    public void sendMail(String recipient, String sbj, String msg) {
+    public EmailService() {
+    }
+
+    public void sendMail(String recipient, String sbj, String msg) throws Exception {
         String protocol = "smtp";
         String from = "sdproj1@outlook.com";
         String pass = "parolalaMAIL";
@@ -35,7 +38,7 @@ public class EmailService implements Service {
             message.setText(msg);
             trans.sendMessage(message, message.getAllRecipients());
         } catch (MessagingException e) {
-            LOGGER.log(Level.SEVERE, "Mail exception: " + e.toString(), e);
+            throw new Exception("Mail exception: " + e.toString(), e);
         }
     }
 }

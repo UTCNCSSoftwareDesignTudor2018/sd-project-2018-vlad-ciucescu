@@ -5,17 +5,19 @@ import java.util.Arrays;
 public class UserFile {
 
     private String name;
-    private String extension;
     private byte[] data;
+    private String collection;
 
     public UserFile() {
         name = "file";
+        data = new byte[]{};
+        collection = "files";
     }
 
-    public UserFile(String name, String extension, byte[] data) {
+    public UserFile(String coll, String name, byte[] data) {
         this.name = name;
-        this.extension = extension;
         this.data = data;
+        this.collection = coll;
     }
 
     public String getName() {
@@ -26,14 +28,6 @@ public class UserFile {
         this.name = name;
     }
 
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
     public byte[] getData() {
         return data;
     }
@@ -42,10 +36,19 @@ public class UserFile {
         this.data = data;
     }
 
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
+    }
+
     @Override
     public String toString() {
         return "UserFile{" +
-                "name='" + name + '.' + extension + '\'' +
+                "name='" + name + '\'' +
+                ", collection='" + collection + '\'' +
                 '}';
     }
 
@@ -57,15 +60,13 @@ public class UserFile {
         UserFile userFile = (UserFile) o;
 
         if (!name.equals(userFile.name)) return false;
-        if (!extension.equals(userFile.extension)) return false;
-        return Arrays.equals(data, userFile.data);
+        return collection.equals(userFile.collection);
     }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + extension.hashCode();
-        result = 31 * result + Arrays.hashCode(data);
+        result = 31 * result + collection.hashCode();
         return result;
     }
 }

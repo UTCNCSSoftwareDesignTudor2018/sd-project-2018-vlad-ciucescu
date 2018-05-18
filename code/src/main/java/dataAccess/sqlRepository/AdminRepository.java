@@ -23,18 +23,18 @@ public class AdminRepository implements Repository<Admin> {
     }
 
     @Override
-    public void persist(Admin obj) {
+    public void persist(Admin obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin persist exception: " + e.toString(), e);
+            throw new Exception("Admin persist exception: " + e.toString(), e);
         }
     }
 
     @Override
-    public Optional<Admin> update(Admin obj) {
+    public Optional<Admin> update(Admin obj) throws Exception{
         Admin admin;
         Optional<Admin> adminOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -44,13 +44,13 @@ public class AdminRepository implements Repository<Admin> {
             adminOptional = Optional.ofNullable(admin);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin update exception: " + e.toString(), e);
+            throw new Exception("Admin update exception: " + e.toString(), e);
         }
         return adminOptional;
     }
 
     @Override
-    public Optional<Admin> find(Integer id) {
+    public Optional<Admin> find(Integer id) throws Exception{
         Admin admin;
         Optional<Admin> adminOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -59,12 +59,12 @@ public class AdminRepository implements Repository<Admin> {
             adminOptional = Optional.ofNullable(admin);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin find exception: " + e.toString(), e);
+            throw new Exception("Admin find exception: " + e.toString(), e);
         }
         return adminOptional;
     }
 
-    public Optional<Admin> findByUsername(String username) {
+    public Optional<Admin> findByUsername(String username) throws Exception{
 
         Optional<Admin> accountOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -73,12 +73,14 @@ public class AdminRepository implements Repository<Admin> {
             q.setParameter("username", username);
             List res = q.list();
             if (!res.isEmpty()) accountOptional = Optional.ofNullable((Admin)res.get(0));
+        } catch (Exception e) {
+            throw new Exception("User find exception: " + e.toString(), e);
         }
         return accountOptional;
     }
 
     @Override
-    public List<Admin> findAll() {
+    public List<Admin> findAll() throws Exception{
         List<Admin> admins = new ArrayList<>();
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
@@ -86,19 +88,19 @@ public class AdminRepository implements Repository<Admin> {
             admins = query.list();
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin find exception: " + e.toString(), e);
+            throw new Exception("Admin find exception: " + e.toString(), e);
         }
         return admins;
     }
 
     @Override
-    public void delete(Admin obj) {
+    public void delete(Admin obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin delete exception: " + e.toString(), e);
+            throw new Exception("Admin delete exception: " + e.toString(), e);
         }
     }
 }

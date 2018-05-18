@@ -19,38 +19,38 @@ public class UserFileRepositoryTest extends RepositoryTest {
     private UserFileRepository repo;
 
     @Test
-    public void findAllTest() {
+    public void findAllTest() throws Exception{
         List<UserFile> expected = new ArrayList<>();
-        expected.add(new UserFile("file1", "txt", new byte[]{0}));
-        expected.add(new UserFile("file2", "txt", new byte[]{0}));
-        List<UserFile> actual = repo.findAll();
+        expected.add(new UserFile("files","file1", new byte[]{0}));
+        expected.add(new UserFile("files","file2", new byte[]{0}));
+        List<UserFile> actual = repo.findAll("files");
         assertEquals(expected, actual);
     }
 
     @Test
-    public void persistTest() {
-        UserFile file = new UserFile("file3", "txt", new byte[]{0});
+    public void persistTest() throws Exception{
+        UserFile file = new UserFile("files","file3", new byte[]{0});
         repo.persist(file);
-        Optional<UserFile> opt = repo.find("file3", "txt");
+        Optional<UserFile> opt = repo.find("file3", "files");
         assertTrue(opt.isPresent());
         repo.delete(opt.get());
     }
 
     @Test
-    public void updateTest() {
-        Optional<UserFile> opt = repo.find("file2", "txt");
+    public void updateTest() throws Exception{
+        Optional<UserFile> opt = repo.find("file2", "files");
         UserFile file = opt.get();
         file.setName("changed");
-        repo.update("file2", "txt", file);
-        opt = repo.find("changed", "txt");
+        repo.update("file2", file);
+        opt = repo.find("changed", "files");
         assertTrue(opt.isPresent());
         file.setName("file2");
-        repo.update("changed", "txt", file);
+        repo.update("changed", file);
     }
 
     @Test
-    public void deleteTest() {
-        UserFile file = new UserFile("file3", "txt", new byte[]{0});
+    public void deleteTest() throws Exception{
+        UserFile file = new UserFile("files", "file3", new byte[]{0});
         repo.persist(file);
         repo.delete(file);
         Optional<UserFile> opt = repo.find("file3", "txt");

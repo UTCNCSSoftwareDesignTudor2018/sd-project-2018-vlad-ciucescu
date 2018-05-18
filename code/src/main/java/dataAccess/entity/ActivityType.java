@@ -7,5 +7,12 @@ public enum ActivityType {
     RMFILE,
     DLFILE,
     SEARCH,
-    REQREPO
+    CREATEACC,
+    PASSCHG,
+    EMAILCHG,
+    BLOCKED,
+    UNBLOCKED,
+    CREATEREPO,
+    RENAMEREPO,
+    DELREPO
 }

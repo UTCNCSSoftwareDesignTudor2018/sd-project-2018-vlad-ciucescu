@@ -10,15 +10,8 @@ import java.time.Instant;
 
 public class FileDescriptionDTO extends DataTransferObject {
 
-    @Size(min = 1, max = 45, message = "File name must be between 1 and 45 characters.")
     private final String name;
-
-    @NotNull(message = "File size cannot be null.")
-    @Max(value = 1048576, message = "Maximum file size is 15Mb(1,048,576 bytes).")
     private final Long size;
-
-    @NotNull(message = "File add time cannot be null.")
-    @PastOrPresent(message = "File add time must be in the past or present.")
     private final Instant addTime;
 
     public FileDescriptionDTO() {

@@ -8,11 +8,9 @@ import java.util.logging.Logger;
 
 public interface Repository<T extends DataEntity> {
 
-    Logger LOGGER = Logger.getLogger(AccountRepository.class.getName());
-
-    void persist(T obj);
-    Optional<T> update(T obj);
-    Optional<T> find(Integer id);
-    List<T> findAll();
-    void delete(T obj);
+    void persist(T obj) throws Exception;
+    Optional<T> update(T obj) throws Exception;
+    Optional<T> find(Integer id) throws Exception;
+    List<T> findAll() throws Exception;
+    void delete(T obj) throws Exception;
 }

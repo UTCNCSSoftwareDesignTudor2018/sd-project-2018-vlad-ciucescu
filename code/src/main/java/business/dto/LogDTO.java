@@ -9,11 +9,8 @@ import java.time.Instant;
 
 public class LogDTO extends DataTransferObject {
 
-    @NotNull(message = "Log timestamp cannot be null.")
-    @PastOrPresent(message = "Log timestamp must be in past or present time.")
     private final Instant timestamp;
 
-    @NotNull(message = "Log activity type cannot be null.")
     private final ActivityType activityType;
 
     public LogDTO() {

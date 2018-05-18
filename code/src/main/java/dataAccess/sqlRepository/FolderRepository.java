@@ -2,6 +2,7 @@ package dataAccess.sqlRepository;
 
 import com.google.inject.Inject;
 import dataAccess.entity.Folder;
+import dataAccess.entity.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -22,18 +23,18 @@ public class FolderRepository implements Repository<Folder> {
     }
 
     @Override
-    public void persist(Folder obj) {
+    public void persist(Folder obj) throws Exception {
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Folder persist exception: " + e.toString(), e);
+            throw new Exception("Folder persist exception: " + e.toString(), e);
         }
     }
 
     @Override
-    public Optional<Folder> update(Folder obj) {
+    public Optional<Folder> update(Folder obj)  throws Exception {
         Folder folder;
         Optional<Folder> folderOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -43,13 +44,13 @@ public class FolderRepository implements Repository<Folder> {
             folderOptional = Optional.ofNullable(folder);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Folder update exception: " + e.toString(), e);
+            throw new Exception("Folder update exception: " + e.toString(), e);
         }
         return folderOptional;
     }
 
     @Override
-    public Optional<Folder> find(Integer id) {
+    public Optional<Folder> find(Integer id)  throws Exception {
         Folder folder;
         Optional<Folder> folderOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -58,13 +59,13 @@ public class FolderRepository implements Repository<Folder> {
             folderOptional = Optional.ofNullable(folder);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Folder find exception: " + e.toString(), e);
+            throw new Exception("Folder find exception: " + e.toString(), e);
         }
         return folderOptional;
     }
 
     @Override
-    public List<Folder> findAll() {
+    public List<Folder> findAll()  throws Exception {
         List<Folder> folders = new ArrayList<>();
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
@@ -72,19 +73,33 @@ public class FolderRepository implements Repository<Folder> {
             folders = query.list();
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Folder find exception: " + e.toString(), e);
+            throw new Exception("Folder find exception: " + e.toString(), e);
+        }
+        return folders;
+    }
+
+    public List<Folder> findAllForUser(User user) throws Exception {
+        List<Folder> folders = new ArrayList<>();
+        try (Session session = sessionFactory.getSession()) {
+            t = session.beginTransaction();
+            Query<Folder> query = session.createQuery("from Folder F where F.user = :user", Folder.class);
+            query.setParameter("user", user);
+            folders = query.list();
+            t.commit();
+        } catch (Exception e) {
+            throw new Exception("Folder find exception: " + e.toString(), e);
         }
         return folders;
     }
 
     @Override
-    public void delete(Folder obj) {
+    public void delete(Folder obj) throws Exception  {
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Folder delete exception: " + e.toString(), e);
+            throw new Exception("Folder delete exception: " + e.toString(), e);
         }
     }
 }

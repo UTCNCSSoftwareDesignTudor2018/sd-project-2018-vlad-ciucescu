@@ -22,18 +22,18 @@ public class ActivityRepository implements Repository<Activity> {
     }
 
     @Override
-    public void persist(Activity obj) {
+    public void persist(Activity obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Activity persist exception: " + e.toString(), e);
+            throw new Exception("Activity persist exception: " + e.toString(), e);
         }
     }
 
     @Override
-    public Optional<Activity> update(Activity obj) {
+    public Optional<Activity> update(Activity obj) throws Exception{
         Activity activity;
         Optional<Activity> activityOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -43,13 +43,13 @@ public class ActivityRepository implements Repository<Activity> {
             activityOptional = Optional.ofNullable(activity);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Activity update exception: " + e.toString(), e);
+            throw new Exception("Activity update exception: " + e.toString(), e);
         }
         return activityOptional;
     }
 
     @Override
-    public Optional<Activity> find(Integer id) {
+    public Optional<Activity> find(Integer id) throws Exception{
         Activity activity;
         Optional<Activity> activityOptional = Optional.empty();
         try (Session session = sessionFactory.getSession()) {
@@ -58,13 +58,13 @@ public class ActivityRepository implements Repository<Activity> {
             activityOptional = Optional.ofNullable(activity);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Activity find exception: " + e.toString(), e);
+            throw new Exception("Activity find exception: " + e.toString(), e);
         }
         return activityOptional;
     }
 
     @Override
-    public List<Activity> findAll() {
+    public List<Activity> findAll() throws Exception{
         List<Activity> activities = new ArrayList<>();
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
@@ -72,19 +72,19 @@ public class ActivityRepository implements Repository<Activity> {
             activities = query.list();
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Activity find exception: " + e.toString(), e);
+            throw new Exception("Activity find exception: " + e.toString(), e);
         }
         return activities;
     }
 
     @Override
-    public void delete(Activity obj) {
+    public void delete(Activity obj) throws Exception{
         try (Session session = sessionFactory.getSession()) {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Activity delete exception: " + e.toString(), e);
+            throw new Exception("Activity delete exception: " + e.toString(), e);
         }
     }
 }
