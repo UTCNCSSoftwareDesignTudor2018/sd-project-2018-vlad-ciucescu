@@ -1,6 +1,8 @@
 package dataAccess.entity;
 
 import javax.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +31,7 @@ public class Folder extends DataEntity {
         this.user = user;
         this.repositoryName = repositoryName;
         this.maxSize = maxSize;
+        this.files = new HashSet<>();
     }
 
     public User getUser() {

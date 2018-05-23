@@ -46,15 +46,13 @@ public class FolderService extends Service {
         injector.injectMembers(this);
     }
 
-    public boolean nameInUse(UserDTO userDTO,
+    public boolean nameInUse(User acc,
                               @NotNull(message = "Repository name cannot be null.")
                               @Size(min = 1, max = 20, message = "Repository name must be between 1 and 20 characters.")String name)
                             throws Exception {
-        Set<String> errors = validationService.validateMethod(this, FolderService.class.getMethod("nameInUse", UserDTO.class, String.class), userDTO, name);
+        Set<String> errors = validationService.validateMethod(this, FolderService.class.getMethod("nameInUse", User.class, String.class), acc, name);
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
-        Optional<User> opt = userRepository.find(userDTO.getId());
-        if (!opt.isPresent()) throw new Exception("Error: cannot find user");
-        List<Folder> folders = folderRepository.findAllForUser(opt.get());
+        List<Folder> folders = folderRepository.findAllForUser(acc);
         for (Folder f:folders) {
             if (f.getRepositoryName().equals(name)) return true;
         }
@@ -69,11 +67,19 @@ public class FolderService extends Service {
                                 throws Exception {
         Set<String> errors = validationService.validateMethod(this, FolderService.class.getMethod("createRepo",User.class, Long.class, String.class), acc, size, name);
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
+        if (nameInUse(acc, name)) throw new Exception("Error: name already in use.");
         Folder folder = new Folder(0, acc, name, size);
         folderRepository.persist(folder);
         logService.log(acc, CREATEREPO);
         return new FolderDTO(folder);
     }
+    
+
+	public void createRepo(UserDTO userAcc, String name) throws Exception{
+		Optional<User> opt = userRepository.find(userAcc.getId());
+    	if(!opt.isPresent()) throw new Exception("Repository error: cannot find user.");
+    	createRepo(opt.get(), 104857600L, name);
+	}
 
     public FolderDTO updateName(FolderDTO folderDTO,
                                 @NotNull(message = "Repository name cannot be null.")
@@ -84,12 +90,19 @@ public class FolderService extends Service {
         Optional<Folder> opt = folderRepository.find(folderDTO.getId());
         if(!opt.isPresent()) throw new Exception("Error: could not find repository");
         Folder folder = opt.get();
+        if (nameInUse(folder.getUser(), name)) throw new Exception("Error: name already in use.");
         folder.setRepositoryName(name);
         folderRepository.update(folder);
         logService.log(folder.getUser(), RENAMEREPO);
         return new FolderDTO(folder);
     }
 
+    public List<FolderDTO> getRepos(UserDTO user) throws Exception{
+    	Optional<User> opt = userRepository.find(user.getId());
+    	if(!opt.isPresent()) throw new Exception("Repisitory error: cannot find user.");
+    	return getRepos(opt.get());
+    }
+    
     public List<FolderDTO> getRepos(User user) throws Exception{
         List<Folder> folders = folderRepository.findAllForUser(user);
         return folders.stream().map(FolderDTO::new).collect(Collectors.toList());
@@ -108,4 +121,5 @@ public class FolderService extends Service {
         userFileRepository.deleteCollection(folder.getUser().getUsername()+folder.getRepositoryName());
         logService.log(folder.getUser(), DELREPO);
     }
+
 }

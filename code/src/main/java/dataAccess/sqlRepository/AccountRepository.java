@@ -1,20 +1,14 @@
 package dataAccess.sqlRepository;
 
-import com.google.inject.Inject;
 import dataAccess.entity.Account;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 
 public class AccountRepository implements Repository<Account> {
-
-    @Inject
-    private SessionFactory sessionFactory;
 
     private Transaction t;
 
@@ -22,7 +16,7 @@ public class AccountRepository implements Repository<Account> {
 
     @Override
     public void persist(Account obj) throws Exception {
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -35,7 +29,7 @@ public class AccountRepository implements Repository<Account> {
     public Optional<Account> update(Account obj) throws Exception {
         Account account;
         Optional<Account> accountOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.evict(obj);
             account = (Account)session.merge(obj);
@@ -51,7 +45,7 @@ public class AccountRepository implements Repository<Account> {
     public Optional<Account> find(Integer id) throws Exception {
         Account account;
         Optional<Account> accountOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             account = session.find(Account.class, id);
             accountOptional = Optional.ofNullable(account);
@@ -66,7 +60,7 @@ public class AccountRepository implements Repository<Account> {
     @Override
     public List<Account> findAll() throws Exception {
         List<Account> accounts = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             Query<Account> query = session.createQuery("from Account", Account.class);
             accounts = query.list();
@@ -80,7 +74,7 @@ public class AccountRepository implements Repository<Account> {
 
     @Override
     public void delete(Account obj) throws Exception{
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

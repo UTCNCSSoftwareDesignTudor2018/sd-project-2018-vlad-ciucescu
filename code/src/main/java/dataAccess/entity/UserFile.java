@@ -1,7 +1,5 @@
 package dataAccess.entity;
 
-import java.util.Arrays;
-
 public class UserFile {
 
     private String name;

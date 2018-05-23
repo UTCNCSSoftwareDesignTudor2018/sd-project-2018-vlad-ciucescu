@@ -1,25 +1,23 @@
 package business.service;
 
-import business.dto.AccountDTO;
 import business.dto.UserDTO;
 import com.google.inject.Inject;
 import dataAccess.entity.Account;
 import dataAccess.entity.User;
-import dataAccess.sqlRepository.AccountRepository;
 import dataAccess.sqlRepository.UserRepository;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static dataAccess.entity.ActivityType.*;
 
 public class UserService extends Service {
-
-    @Inject
-    private AccountRepository accountRepository;
 
     @Inject
     private UserRepository userRepository;
@@ -44,9 +42,9 @@ public class UserService extends Service {
     }
 
     public UserDTO logIn(@NotNull(message = "Account username cannot be null.")String username,
-                                   @NotNull(message = "Account password cannot be null.")String pass)
+                                   @NotNull(message = "Account password cannot be null.")char[] pass)
                                     throws Exception{
-        Set<String> errors = validationService.validateMethod(this, UserService.class.getMethod("logIn", String.class, String.class), username, pass);
+        Set<String> errors = validationService.validateMethod(this, UserService.class.getMethod("logIn", String.class, char[].class), username, pass);
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         Optional<User> opt = userRepository.findByUsername(username);
         if (!opt.isPresent()) throw new Exception("Error: Invalid account.");
@@ -66,7 +64,6 @@ public class UserService extends Service {
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         String tempPass = passwordService.randomPass(10);
         Account acc = new Account(0, username, passwordService.hash(tempPass), email);
-        accountRepository.persist(acc);
         User user = new User(acc);
         userRepository.persist(user);
         folderService.createRepo(user, 20*1024*1024L, "repository1");
@@ -82,5 +79,9 @@ public class UserService extends Service {
         acc.setBlocked(blocked);
 
         logService.log(acc, blocked?BLOCKED:UNBLOCKED);
+    }
+   
+    public List<UserDTO> getAllUsers() throws Exception {
+    	return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 }

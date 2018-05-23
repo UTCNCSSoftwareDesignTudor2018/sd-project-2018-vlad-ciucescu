@@ -7,7 +7,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public class EmailService extends Service {
 
@@ -19,7 +18,7 @@ public class EmailService extends Service {
         String from = "sdproj1@outlook.com";
         String pass = "parolalaMAIL";
         String host = "smtp.live.com";
-        String port = "25";
+        String port = "587";
 
         Properties properties = System.getProperties();
         properties.setProperty("mail.transport.protocol", protocol);

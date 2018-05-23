@@ -14,9 +14,6 @@ import java.util.logging.Level;
 
 public class LogRepository implements Repository<Log> {
 
-    @Inject
-    private SessionFactory sessionFactory;
-
     private Transaction t;
 
     protected LogRepository() {
@@ -24,7 +21,7 @@ public class LogRepository implements Repository<Log> {
 
     @Override
     public void persist(Log obj) throws Exception {
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -37,7 +34,7 @@ public class LogRepository implements Repository<Log> {
     public Optional<Log> update(Log obj) throws Exception {
         Log log;
         Optional<Log> logOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.evict(obj);
             log = (Log) session.merge(obj);
@@ -53,7 +50,7 @@ public class LogRepository implements Repository<Log> {
     public Optional<Log> find(Integer id)throws Exception {
         Log log;
         Optional<Log> logOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             log = session.find(Log.class, id);
             logOptional = Optional.ofNullable(log);
@@ -67,7 +64,7 @@ public class LogRepository implements Repository<Log> {
     @Override
     public List<Log> findAll() throws Exception{
         List<Log> logs = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             Query<Log> query = session.createQuery("from Log", Log.class);
             logs = query.list();
@@ -80,7 +77,7 @@ public class LogRepository implements Repository<Log> {
 
     public List<Log> findAllForAcc(Account acc) throws Exception {
         List<Log> logs = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             Query<Log> query = session.createQuery("from Log L where L.account = :account", Log.class);
             query.setParameter("account", acc);
@@ -94,7 +91,7 @@ public class LogRepository implements Repository<Log> {
 
     @Override
     public void delete(Log obj)throws Exception {
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

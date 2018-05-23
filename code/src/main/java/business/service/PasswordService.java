@@ -2,8 +2,8 @@ package business.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 
 public class PasswordService extends Service {
 
@@ -22,17 +22,17 @@ public class PasswordService extends Service {
     }
 
     public String randomPass(int length) {
-        byte[] salt = new byte[32];
-        try {
-            SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-            sr.nextBytes(salt);
-        } catch (NoSuchAlgorithmException e) {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder();
+    	Random rand = new Random();
+        for (int i = 0; i<5; i++) {
+        	sb.append(chars.charAt(rand.nextInt((chars.length()))));
         }
-        return Arrays.toString(salt);
+        return sb.toString();
     }
 
-    public Boolean match(String pass, byte[] hash) {
-        return Arrays.equals(hash, hash(pass));
+    public Boolean match(char[] pass, byte[] hash) {
+        return Arrays.equals(hash, hash(new String(pass)));
     }
 
 }

@@ -1,12 +1,12 @@
 package business.service;
 
+import business.dto.AccountDTO;
 import business.dto.LogDTO;
 import com.google.inject.Inject;
 import dataAccess.entity.Account;
-import dataAccess.entity.Activity;
 import dataAccess.entity.ActivityType;
 import dataAccess.entity.Log;
-import dataAccess.sqlRepository.ActivityRepository;
+import dataAccess.sqlRepository.AccountRepository;
 import dataAccess.sqlRepository.LogRepository;
 
 import java.time.Instant;
@@ -20,17 +20,22 @@ public class LogService extends Service {
     private LogRepository logRepository;
 
     @Inject
-    private ActivityRepository activityRepository;
-
+    private AccountRepository accountRepository;
+    
     public LogService() {
         injector.injectMembers(this);
     }
-
+    
+    public void log(AccountDTO acc, ActivityType type) throws Exception{
+    	Optional<Account> opt = accountRepository.find(acc.getId());
+    	if (!opt.isPresent()) throw new Exception("Log exception: cannot find account");
+        Log log = new Log(0, opt.get(), Instant.now(), type);
+        logRepository.update(log);
+    }
+    
     public void log(Account acc, ActivityType type) throws Exception{
-        Optional<Activity> act =activityRepository.find(type.ordinal());
-        if (!act.isPresent()) throw new Exception("Error: Invalid activity");
-        Log log = new Log(0, acc, Instant.now(), act.get());
-        logRepository.persist(log);
+        Log log = new Log(0, acc, Instant.now(), type);
+        logRepository.update(log);
     }
 
     public List<LogDTO> findLogs(Account acc) throws Exception{
@@ -41,4 +46,10 @@ public class LogService extends Service {
         List<LogDTO> logs = findLogs(acc);
         return logs.stream().filter(l->l.getTimestamp().isAfter(t1) && l.getTimestamp().isBefore(t2)).collect(Collectors.toList());
     }
+
+	public List<LogDTO> findLogs(AccountDTO acc) throws Exception {
+		Optional<Account> opt = accountRepository.find(acc.getId());
+    	if (!opt.isPresent()) throw new Exception("Log exception: cannot find account");
+    	return findLogs(opt.get());
+	}
 }

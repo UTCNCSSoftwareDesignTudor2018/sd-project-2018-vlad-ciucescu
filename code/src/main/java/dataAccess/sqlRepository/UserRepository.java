@@ -1,21 +1,14 @@
 package dataAccess.sqlRepository;
 
-import com.google.inject.Inject;
-import dataAccess.entity.Admin;
 import dataAccess.entity.User;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 
 public class UserRepository implements Repository<User> {
-
-    @Inject
-    private SessionFactory sessionFactory;
 
     private Transaction t;
 
@@ -24,7 +17,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void persist(User obj) throws Exception{
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.persist(obj);
             t.commit();
@@ -37,7 +30,7 @@ public class UserRepository implements Repository<User> {
     public Optional<User> update(User obj) throws Exception{
         User user;
         Optional<User> userOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.evict(obj);
             user = (User) session.merge(obj);
@@ -53,7 +46,7 @@ public class UserRepository implements Repository<User> {
     public Optional<User> find(Integer id) throws Exception{
         User user;
         Optional<User> userOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             user = session.find(User.class, id);
             userOptional = Optional.ofNullable(user);
@@ -67,11 +60,12 @@ public class UserRepository implements Repository<User> {
     public Optional<User> findByUsername(String username) throws Exception{
 
         Optional<User> accountOptional = Optional.empty();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
-            Query q = session.createQuery("FROM Account A WHERE A.username = :username");
+            Query q = session.createQuery("FROM User A WHERE A.username = :username");
             q.setParameter("username", username);
             List res = q.list();
+            t.commit();
             if (!res.isEmpty()) accountOptional = Optional.ofNullable((User)res.get(0));
         } catch (Exception e) {
             throw new Exception("User find exception: " + e.toString(), e);
@@ -82,7 +76,7 @@ public class UserRepository implements Repository<User> {
     @Override
     public List<User> findAll() throws Exception{
         List<User> users = new ArrayList<>();
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             Query<User> query = session.createQuery("from User", User.class);
             users = query.list();
@@ -95,7 +89,7 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public void delete(User obj) throws Exception{
-        try (Session session = sessionFactory.getSession()) {
+        try {
             t = session.beginTransaction();
             session.delete(obj);
             t.commit();

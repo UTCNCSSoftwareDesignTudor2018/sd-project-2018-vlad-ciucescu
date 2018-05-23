@@ -18,8 +18,7 @@ public class SessionFactory {
                     .addAnnotatedClass(FileDescription.class)
                     .addAnnotatedClass(Folder.class)
                     .addAnnotatedClass(User.class)
-                    .addAnnotatedClass(Log.class)
-                    .addAnnotatedClass(Activity.class);
+                    .addAnnotatedClass(Log.class);
             configuration.configure();
             return configuration.buildSessionFactory().openSession();
         } catch (Throwable ex) {

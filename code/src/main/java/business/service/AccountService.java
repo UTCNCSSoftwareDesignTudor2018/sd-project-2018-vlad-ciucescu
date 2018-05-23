@@ -36,10 +36,6 @@ public class AccountService extends Service {
         injector.injectMembers(this);
     }
 
-    public boolean validatePass(byte[] actual, String pass) {
-        return passwordService.match(pass, actual);
-    }
-
     public boolean usernameInUse(@NotNull(message = "Username cannot be null.")
                                  @Size(min = 5, max = 20, message = "Account username must be between 5 and 20 characters")String username)
                                 throws Exception {
@@ -81,6 +77,7 @@ public class AccountService extends Service {
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         Optional<Account> opt = accountRepository.find(dto.getId());
         if (!opt.isPresent()) throw new Exception("Error: Invalid account.");
+        if (emailInUse(newEmail)) throw new Exception("Error: Email already in use.");
         Account acc = opt.get();
         acc.setEmail(newEmail);
         accountRepository.update(acc);

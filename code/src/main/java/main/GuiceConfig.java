@@ -13,9 +13,6 @@ public class GuiceConfig extends AbstractModule {
         bind(new TypeLiteral<Repository<Account>>(){})
                 .to(AccountRepository.class);
 
-        bind(new TypeLiteral<Repository<Activity>>(){})
-                .to(ActivityRepository.class);
-
         bind(new TypeLiteral<Repository<Admin>>(){})
                 .to(AdminRepository.class);
 

@@ -29,9 +29,9 @@ public class AdminService extends Service {
     }
 
     public AdminDTO logIn(@NotNull(message = "Account username cannot be null.")String username,
-                                    @NotNull(message = "Account password cannot be null.")String pass)
+                                    @NotNull(message = "Account password cannot be null.")char[] pass)
                                     throws Exception{
-        Set<String> errors = validationService.validateMethod(this, AdminService.class.getMethod("logIn", String.class, String.class), username, pass);
+        Set<String> errors = validationService.validateMethod(this, AdminService.class.getMethod("logIn", String.class, char[].class), username, pass);
         if (!errors.isEmpty()) throw new Exception("Errors" + errors.toString());
         Optional<Admin> opt = adminRepository.findByUsername(username);
         if (!opt.isPresent()) throw new Exception("Error: Invalid account.");

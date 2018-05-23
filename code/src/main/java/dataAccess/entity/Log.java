@@ -14,15 +14,15 @@ public class Log extends DataEntity {
     @Column(name = "timestamp", nullable = false)
     private Instant timestamp;
 
-    @OneToOne
-    @MapsId
-    private Activity activity;
+    @Column(name = "description", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ActivityType activity;
 
     public Log() {
         super();
     }
 
-    public Log(Integer id, Account account, Instant timestamp, Activity activity) {
+    public Log(Integer id, Account account, Instant timestamp, ActivityType activity) {
         super(id);
         this.account = account;
         this.timestamp = timestamp;
@@ -45,11 +45,11 @@ public class Log extends DataEntity {
         this.timestamp = timestamp;
     }
 
-    public Activity getActivity() {
+    public ActivityType getActivity() {
         return activity;
     }
 
-    public void setActivity(Activity activity) {
+    public void setActivity(ActivityType activity) {
         this.activity = activity;
     }
 

@@ -3,7 +3,6 @@ package business.service;
 import business.dto.FileDescriptionDTO;
 import business.dto.FolderDTO;
 import com.google.inject.Inject;
-import dataAccess.entity.FileDescription;
 import dataAccess.entity.Folder;
 import dataAccess.sqlRepository.FileDescriptionRepository;
 import dataAccess.sqlRepository.FolderRepository;

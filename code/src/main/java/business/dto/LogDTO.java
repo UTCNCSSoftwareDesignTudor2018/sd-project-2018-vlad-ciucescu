@@ -3,8 +3,6 @@ package business.dto;
 import dataAccess.entity.ActivityType;
 import dataAccess.entity.Log;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import java.time.Instant;
 
 public class LogDTO extends DataTransferObject {
@@ -25,7 +23,7 @@ public class LogDTO extends DataTransferObject {
     }
 
     public LogDTO(Log log) {
-        this(log.getId(), log.getTimestamp(), log.getActivity().getType());
+        this(log.getId(), log.getTimestamp(), log.getActivity());
     }
 
     public Instant getTimestamp() {
@@ -38,10 +36,7 @@ public class LogDTO extends DataTransferObject {
 
     @Override
     public String toString() {
-        return "LogDTO{" +
-                "timestamp=" + timestamp +
-                ", activityType=" + activityType +
-                '}';
+        return timestamp + " " + activityType;      
     }
 
     @Override

@@ -2,10 +2,6 @@ package business.dto;
 
 import dataAccess.entity.FileDescription;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 
 public class FileDescriptionDTO extends DataTransferObject {
@@ -43,13 +39,15 @@ public class FileDescriptionDTO extends DataTransferObject {
         return addTime;
     }
 
+    private String format(Long size) {
+    	if (size < 1024) return size + " Bytes";
+    	if (size < 1024*1024) return size/1024 + "KB";
+    	return size/1024/1024+"MB";
+    }
+    
     @Override
     public String toString() {
-        return "FileDescriptionDTO{" +
-                "name='" + name + '\'' +
-                ", size=" + size +
-                ", addTime=" + addTime +
-                '}';
+    	return String.format("%-20s%-10s%-50s", name, format(size), "Added on " + addTime);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package dataAccess.entity;
 
 import javax.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +13,7 @@ public class Account extends DataEntity {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false, columnDefinition = "char(32)")
+    @Column(name = "password", nullable = false, columnDefinition = "BINARY(16)")
     private byte[] password;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -29,6 +31,7 @@ public class Account extends DataEntity {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.logs = new HashSet<>();
     }
 
     public String getUsername() {
@@ -53,14 +56,6 @@ public class Account extends DataEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Set<Log> getLogs() {
-        return logs;
-    }
-
-    public void setLogs(Set<Log> logs) {
-        this.logs = logs;
     }
 
     @Override

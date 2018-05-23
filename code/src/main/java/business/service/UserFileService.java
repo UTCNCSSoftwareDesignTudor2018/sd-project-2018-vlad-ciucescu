@@ -13,7 +13,6 @@ import dataAccess.sqlRepository.FolderRepository;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -75,6 +74,7 @@ public class UserFileService extends Service {
         if (repoSize + fileSize > folderDTO.getMaxSize()) throw new Exception("Error: not enough space");
         Optional<Folder> opt = folderRepository.find(folderDTO.getId());
         if (!opt.isPresent()) throw new Exception("Error: cannot find repository.");
+        if (fileNameInUse(folderDTO, path.getFileName().toString())) throw new Exception("Error: file name already in use.");
         Folder folder = opt.get();
         fileRepository.persist(adapter.getUserFile(path, folder.getUser().getUsername()+folder.getRepositoryName()));
         FileDescription fd = new FileDescription(0, folder, path.getFileName().toString(), fileSize, Instant.now());
@@ -89,7 +89,10 @@ public class UserFileService extends Service {
         Folder folder = opt.get();
         Optional<UserFile> optF = fileRepository.find(fd.getName(), folder.getUser().getUsername()+folder.getRepositoryName());
         if (!optF.isPresent()) throw new Exception("Error: cannot find file.");
+        Optional<FileDescription> optFD = fileDescriptionRepository.find(fd.getId());
+        if (!optFD.isPresent()) throw new Exception("Error: cannot find file description.");
         fileRepository.delete(optF.get());
+        fileDescriptionRepository.delete(optFD.get());
         logService.log(folder.getUser(), RMFILE);
     }
 
